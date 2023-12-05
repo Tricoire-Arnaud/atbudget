@@ -10,6 +10,23 @@ updateBalance();
 updateChart();
 updateCategoryDropdown();
 
+// Fonction pour ajouter ou modifier une transaction
+function ajouterOuModifierTransaction() {
+    // Récupération de l'index à modifier
+    const indexToModify = document.getElementById('index-to-modify').value;
+
+    if (indexToModify !== '') {
+        // Si un index est spécifié, il s'agit d'une modification
+        modifierTransaction(indexToModify);
+    } else {
+        // Sinon, c'est une nouvelle transaction
+        ajouterTransaction();
+    }
+
+    // Réinitialiser l'index de modification
+    document.getElementById('index-to-modify').value = '';
+}
+
 // Fonction pour ajouter une nouvelle transaction
 function ajouterTransaction() {
     // Récupération des valeurs du formulaire
@@ -30,7 +47,7 @@ function ajouterTransaction() {
 
         // Ajout de la transaction à la liste
         transactions.push(transaction);
-        
+
         // Mise à jour de l'affichage
         updateTransactionsList();
         updateBalance();
@@ -41,6 +58,27 @@ function ajouterTransaction() {
     } else {
         alert('Veuillez saisir une description et un montant valide.');
     }
+}
+
+// Fonction pour modifier une transaction
+function modifierTransaction(index) {
+    const transaction = transactions[index];
+
+    // Remplir le formulaire avec les détails de la transaction sélectionnée
+    document.getElementById('type').value = transaction.type;
+    document.getElementById('description').value = transaction.description;
+    document.getElementById('amount').value = transaction.amount;
+    document.getElementById('category').value = transaction.category;
+
+    // Supprimer la transaction de la liste
+    transactions.splice(index, 1);
+
+    // Mettre à jour l'affichage
+    updateTransactionsList();
+    updateBalance();
+    updateChart();
+    saveDataToLocal();
+    updateCategoryDropdown();
 }
 
 // Fonction pour supprimer une transaction
@@ -92,6 +130,7 @@ function updateTransactionsList(transactionsList = transactions) {
             </div>
             <span class="actions">
                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="supprimerTransaction(${index})">✖</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="modifierTransaction(${index})">Modifier</button>
             </span>
         `;
         transactionsListElement.appendChild(li);
@@ -169,6 +208,7 @@ function updateBalance() {
 
 // Fonction pour effacer les champs du formulaire
 function clearInputs() {
+    document.getElementById('type').value = 'income'; // Réinitialiser le type à 'Revenu'
     document.getElementById('description').value = '';
     document.getElementById('amount').value = '';
     document.getElementById('category').value = ''; // Vide la sélection de la catégorie
@@ -188,7 +228,7 @@ function loadTransactionsFromLocal() {
 // Fonction pour mettre à jour le menu déroulant des catégories
 function updateCategoryDropdown() {
     const categoryDropdown = document.getElementById('category');
-    
+
     // Obtention des catégories uniques
     const uniqueCategories = [...new Set(['Salaire', 'Alimentation', 'Logement', 'Véhicule', ...transactions.map(transaction => transaction.category)])];
 
