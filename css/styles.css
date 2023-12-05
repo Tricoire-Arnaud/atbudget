@@ -1,6 +1,5 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -8,17 +7,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Utilisation de min-height pour garantir une hauteur minimale de 100% de la vue */
     font-size: 18px;
 }
-.container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgb(250, 249, 249);
-    max-width: 400px;
-    width: 100%;
-    margin: 0 auto;
+
+.container-fluid {
+    padding: 20px; /* Ajout de padding à la classe container-fluid pour éviter que le contenu ne touche les bords */
+    box-sizing: border-box; /* Utilisation de box-sizing pour inclure le padding dans la largeur totale */
 }
 
 h1 {
@@ -64,6 +59,7 @@ li {
     border-bottom: 1px solid #ddd;
     padding: 12px 0;
     color: #333;
+    overflow: hidden; /* Ajout d'overflow: hidden pour éviter que les éléments débordent de la boîte */
 }
 
 #balance {
